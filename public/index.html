@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+	  <meta name="referrer" content="no-referrer" />
+    <title>H&K商城</title>
+	  <style>
+		  .el-cascader__dropdown.store_search_cascader {
+			  border: 0;
+			  background-color: rgba(255, 185, 120, 0.9);
+		  }
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-menu {
+			  color: #fff;
+		  }
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-node:not(.is-disabled):focus,
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-node:not(.is-disabled):hover{
+			  background-color: #ff7d00;
+		  }
+		  .el-cascader__dropdown.store_search_cascader[x-placement^=top] .popper__arrow::after {
+			  border-top-color: rgba(255, 185, 120, 0.9);
+		  }
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-node.in-active-path,
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-node.is-active,
+		  .el-cascader__dropdown.store_search_cascader .el-cascader-node.is-selectable.in-checked-path {
+			  color: #fff;
+		  }
+
+		  #pre {
+			  display: inline-block;
+			  z-index: -1;
+			  position: fixed;
+			  top: -100vw;
+			  left: -100vw;
+			  opacity: 0;
+		  }
+	  </style>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <pre id="pre"></pre>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
