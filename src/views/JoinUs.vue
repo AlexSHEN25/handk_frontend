@@ -19,7 +19,7 @@
           <template v-if="navIndex == 0">
             <ul>
               <li>
-                <span class="title">公司全称</span>
+                <span class="title">*公司全称</span>
                 <div class="value">
                   <div class="input_box"><input v-model="submitData0.company_name" type="text"></div>
                 </div>
@@ -95,10 +95,10 @@
               <li>
                 <span class="title">*联系方式</span>
                 <div class="value">
-                  <label class="input_box"><em>手机号：</em><input v-model="submitData1.phone" type="text"></label>
-                  <label class="input_box"><em>QQ号：</em><input v-model="submitData1.qq_num" type="text"></label>
+<!--                  <label class="input_box"><em>手机号：</em><input v-model="submitData1.phone" type="text"></label>-->
+<!--                  <label class="input_box"><em>QQ号：</em><input v-model="submitData1.qq_num" type="text"></label>-->
                   <label class="input_box"><em>微信号：</em><input v-model="submitData1.wechat_num" type="text"></label>
-                  <label class="input_box"><em>*e-mail：</em><input v-model="submitData1.email" type="text"></label>
+<!--                  <label class="input_box"><em>*e-mail：</em><input v-model="submitData1.email" type="text"></label>-->
                 </div>
               </li>
               <li>
@@ -206,30 +206,33 @@ export default {
             case d0.principal == '':
               msg = '负责人姓名不能为空';
               break;
-            case d0.phone == '':
-              msg = '手机号不能为空';
+            case d0.wechat_num == '':
+              msg = '微信号不能为空';
               break;
-            case !validateMobile(d0.phone):
-              msg = '手机号格式错误';
-              break;
-            case d0.qq_num == '' && d0.wechat_num == '':
-              msg = 'QQ号和微信号至少填一个';
-              break;
-            case d0.email == '':
-              msg = '邮箱不能为空';
-              break;
-            case !validateEmail(d0.email):
-              msg = '邮箱格式错误';
-              break;
-            case d0.company_address == '':
-              msg = '地址不能为空';
-              break;
+            // case d0.phone == '':
+            //   msg = '手机号不能为空';
+            //   break;
+            // case !validateMobile(d0.phone):
+            //   msg = '手机号格式错误';
+            //   break;
+            // case d0.qq_num == '' && d0.wechat_num == '':
+            //   msg = 'QQ号和微信号至少填一个';
+            //   break;
+            // case d0.email == '':
+            //   msg = '邮箱不能为空';
+            //   break;
+            // case !validateEmail(d0.email):
+            //   msg = '邮箱格式错误';
+            //   break;
+            // case d0.company_address == '':
+            //   msg = '地址不能为空';
+            //   break;
             case d0.channel == '':
               msg = '销售渠道不能为空';
               break;
-            case d0.email_content == '':
-              msg = '邮件内容不能为空';
-              break;
+            // case d0.email_content == '':
+            //   msg = '邮件内容不能为空';
+            //   break;
           }
       		break;
       	case 1:
@@ -240,24 +243,27 @@ export default {
             case d1.area == '':
               msg = '请先选择所在省份';
               break;
-            case d1.phone == '':
-              msg = '手机号不能为空';
+            // case d1.phone == '':
+            //   msg = '手机号不能为空';
+            //   break;
+            // case !validateMobile(d1.phone):
+            //   msg = '手机号格式错误';
+            //   break;
+            case d1.wechat_num == '':
+              msg = '微信号不能为空';
               break;
-            case !validateMobile(d1.phone):
-              msg = '手机号格式错误';
-              break;
-            case d1.qq_num == '' && d1.wechat_num == '':
-              msg = 'QQ号和微信号至少填一个';
-              break;
-            case d1.email == '':
-              msg = '邮箱不能为空';
-              break;
-            case !validateEmail(d1.email):
-              msg = '邮箱格式错误';
-              break;
-            case d1.email_content == '':
-              msg = '邮件内容不能为空';
-              break;
+            // case d1.qq_num == '' && d1.wechat_num == '':
+            //   msg = 'QQ号和微信号至少填一个';
+            //   break;
+            // case d1.email == '':
+            //   msg = '邮箱不能为空';
+            //   break;
+            // case !validateEmail(d1.email):
+            //   msg = '邮箱格式错误';
+            //   break;
+            // case d1.email_content == '':
+            //   msg = '邮件内容不能为空';
+            //   break;
           }
       		break;
       }

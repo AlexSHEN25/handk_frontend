@@ -34,7 +34,8 @@
               <el-table-column
                   type="selection"
                   width="40"
-                  fixed="left">
+                  fixed="left"
+                  :selectable="rowSelectable">
               </el-table-column>
 
               <!-- 品名：固定 -->
@@ -136,6 +137,9 @@ export default {
     this.getDetail();
   },
   methods: {
+    rowSelectable(row) {
+      return row.stock >= row.order_num
+    },
     handleSelectionChange(i, l) {
       this.multipleSelection.splice(i, 1, l)
     },
@@ -180,7 +184,7 @@ export default {
       }
       row.choose_num = normalized
     },
-    add2cart({goods_spec}, index) {
+    add2cart({ goods_spec }, index) {
       const list = this.multipleSelection[index] || [];
 
       if (list.length <= 0) {
@@ -188,23 +192,51 @@ export default {
         return false;
       }
 
-      const d = cloneDeep(list).map((v, j) => {
-        const {goods_info_id, id, choose_num} = v;
-        return {
-          goods_info_id,
-          goods_spec_id: id,
-          quantity: choose_num,
+      // ===== 新增库存 & 起订量校验 =====
+      for (let item of list) {
+        const stock = item.stock || 0
+        const unit = item.order_num || 1
+        const qty = item.choose_num || 0
+
+        // 库存小于起订量
+        if (stock < unit) {
+          this.$message.error(`【${item.name}】库存不足，小于起订数量`)
+          return false
         }
-      })
-      addCart({cart_data: d}).then(() => {
+
+        // 未填写数量
+        if (qty <= 0) {
+          this.$message.error(`【${item.name}】请选择订单数量`)
+          return false
+        }
+
+        // 数量小于起订量
+        if (qty < unit) {
+          this.$message.error(`【${item.name}】起订数量为 ${unit}`)
+          return false
+        }
+
+        // 数量超过库存
+        if (qty > stock) {
+          this.$message.error(`【${item.name}】超过库存数量`)
+          return false
+        }
+      }
+
+      const d = cloneDeep(list).map(v => ({
+        goods_info_id: v.goods_info_id,
+        goods_spec_id: v.id,
+        quantity: v.choose_num,
+      }))
+
+      addCart({ cart_data: d }).then(() => {
         return shopPage()
       }).then(res => {
-        const cartNum = res.data.cart_num;
-        // 通知全局刷新购物车数量
-        this.$store.dispatch('config/setCartNum',cartNum);
-        this.$message.success(res.msg);
-         }).catch(res => {
-        this.$message.error(res.msg);
+        const cartNum = res.data.cart_num
+        this.$store.dispatch('config/setCartNum', cartNum)
+        this.$message.success(res.msg)
+      }).catch(res => {
+        this.$message.error(res.msg)
       })
     },
   },

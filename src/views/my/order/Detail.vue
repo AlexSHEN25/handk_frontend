@@ -71,7 +71,10 @@
                   @click="increase(item)"
               >＋</span>
             </div>
-            <div class="add_cart_btn" @click="addToCart(item)">加入购物车</div>
+            <div
+                class="add_cart_btn"
+                :class="{ disabled: item.disabled }"
+                @click="!item.disabled && addToCart(item)">加入购物车</div>
           </div>
         </div>
       </div>
@@ -155,6 +158,24 @@ export default {
     },
 
     addToCart(item) {
+      const unit = item.order_num
+      const stock = item.stock
+
+      if (stock < unit) {
+        this.$message.warning('库存不足，当前库存小于起订数量，无法加入购物车')
+        return
+      }
+
+      if (item.cart_qty < unit) {
+        this.$message.warning(`起订数量为 ${unit}`)
+        return
+      }
+
+      if (item.cart_qty > stock) {
+        this.$message.warning('超过库存数量')
+        return
+      }
+
       addCart({
         cart_data: [
           {
@@ -166,14 +187,12 @@ export default {
       }).then(() => {
         return shopPage()
       }).then(res => {
-            const cartNum = res.data.cart_num;
-            // 通知全局刷新购物车数量
-            this.$store.dispatch('config/setCartNum',cartNum);
-            this.$message.success('已加入购物车')
-            // 如果你有购物车角标
-          }).catch(err => {
-            this.$message.error(err.msg || '加入购物车失败')
-          })
+        const cartNum = res.data.cart_num
+        this.$store.dispatch('config/setCartNum', cartNum)
+        this.$message.success('已加入购物车')
+      }).catch(err => {
+        this.$message.error(err.msg || '加入购物车失败')
+      })
     }
   }
 }
@@ -333,6 +352,11 @@ section.order {
           border-radius: 4px;
           font-size: 13px;
         }
+
+        .add_cart_btn.disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
       }
 
       & + .info {
@@ -459,6 +483,11 @@ section.order {
           .add_cart_btn {
             font-size: 12px;
             padding: 6px 10px;
+          }
+
+          .add_cart_btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
           }
         }
       }
